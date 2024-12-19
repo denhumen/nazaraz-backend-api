@@ -70,6 +70,7 @@ def receive_events():
     try:
         # Parse the JSON payload
         data = request.get_json()
+        print("Received Data:", data)  # Log received data
         event_data = data.get("eventData")
         events = data.get("events")
         event_date = datetime.strptime(event_data["startDateTime"].split("T")[0], "%Y-%m-%d")
@@ -82,6 +83,7 @@ def receive_events():
             "message": "Predicted time slots successfully.",
             "predictedSlots": processed_data,
         }
+        print("Processed Data:", response)  # Log processed response
         return jsonify(response), 200
 
     except Exception as e:
@@ -90,4 +92,4 @@ def receive_events():
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, ssl_context='adhoc')
